@@ -13,12 +13,12 @@ import {IERC165, ERC165} from "@openzeppelin/contracts/utils/introspection/ERC16
 
 contract ERC721OwnershipHookScript is Script {
     address constant CREATE2_DEPLOYER = address(0x4e59b44847b379578588920cA78FbF26c0B4956C);
-    address constant PERKSNFT = payable(0x8c1a55B3c6629716571234A1935ad2F593853066);
+    address constant PERKSNFT = payable(0x5911C7265d0f16964821D58879e34Cdc7e47Ae7F); // mumbai
 
     function setUp() public {}
 
     function run() public {
-        IPoolManager manager = IPoolManager(payable(0x64255ed21366DB43d89736EE48928b890A84E2Cb));
+        IPoolManager manager = IPoolManager(payable(0x5FF8780e4D20e75B8599A9C4528D8ac9682e5c89));
         // IPoolManager manager = IPoolManager(payable(0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9));
 
         // hook contracts must have specific flags encoded in the address

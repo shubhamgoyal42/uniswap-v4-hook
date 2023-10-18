@@ -26,9 +26,9 @@ contract CreatePoolScript is Script {
     PoolKey poolKey;
     PoolId poolId;
 
-    address constant PerksToken = address(0xf290BE43b65583E6a45Ee13bD042081784a45a45);
-    address constant USDC = address(0x8267cF9254734C6Eb452a7bb9AAF97B392258b21); // unofficial
-    ERC721OwnershipHook constant hook = ERC721OwnershipHook(address(0x0870573e62D36fd5Ec21D309E55c657ea46f128B));
+    address constant PerksToken = address(0xEc0941828C0C8af69525F797efe9512de0b4A51a);
+    address constant USDC = address(0x8c1a55B3c6629716571234A1935ad2F593853066); // custom
+    ERC721OwnershipHook constant hook = ERC721OwnershipHook(address(0x08E834a760D976ae5d869F795AA8776509B09F03));
 
     uint160 constant SQRT_RATIO_1_1 = 79228162514264337593543950336;
     bytes constant ZERO_BYTES = bytes("");
@@ -36,12 +36,15 @@ contract CreatePoolScript is Script {
     function setUp() public {}
 
     function run() public {
-        IPoolManager manager = IPoolManager(payable(0x64255ed21366DB43d89736EE48928b890A84E2Cb));
+        IPoolManager manager = IPoolManager(payable(0x5FF8780e4D20e75B8599A9C4528D8ac9682e5c89));
 
         // Call the initialize function
         poolKey = PoolKey(Currency.wrap(USDC), Currency.wrap(PerksToken), 3000, 60, IHooks(hook));
         poolId = poolKey.toId();
         console.log("##################");
+        // console.log(Currency.unwrap(poolKey.currency0));
+        // console.log(Currency.unwrap(poolKey.currency1));
+        // console.log(poolKey.fee);
         console.logBytes32(keccak256(abi.encode(poolKey)));
 
         vm.broadcast();
