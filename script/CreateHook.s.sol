@@ -5,13 +5,11 @@ import "forge-std/Script.sol";
 import "forge-std/console.sol";
 import {Hooks} from "@uniswap/v4-core/contracts/libraries/Hooks.sol";
 import {IPoolManager} from "@uniswap/v4-core/contracts/interfaces/IPoolManager.sol";
-import {ERC721OwnershipHook} from "../src/ERC721OwnershipHook.sol";
+import {PerksStoreHook} from "../src/PerksStoreHook.sol";
 import {HookMiner} from "../test/utils/HookMiner.sol";
-import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {IERC165, ERC165} from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
-contract ERC721OwnershipHookScript is Script {
+contract PerksStoreHookScript is Script {
     address constant CREATE2_DEPLOYER = address(0x4e59b44847b379578588920cA78FbF26c0B4956C);
     address constant PERKSNFT = payable(0x5911C7265d0f16964821D58879e34Cdc7e47Ae7F); // mumbai
 
@@ -27,7 +25,7 @@ contract ERC721OwnershipHookScript is Script {
         );
 
         // Mine a salt that will produce a hook address with the correct flags
-        (address hookAddress, bytes32 salt) = HookMiner.find(CREATE2_DEPLOYER, flags, 900, type(ERC721OwnershipHook).creationCode, abi.encode(address(manager)));
+        (address hookAddress, bytes32 salt) = HookMiner.find(CREATE2_DEPLOYER, flags, 900, type(PerksStoreHook).creationCode, abi.encode(address(manager)));
 
         IERC165 checker = IERC165(PERKSNFT);
         bool supportsERC721 = checker.supportsInterface(0x80ac58cd);  // For ERC721
@@ -43,8 +41,7 @@ contract ERC721OwnershipHookScript is Script {
         // Deploy the hook using CREATE2
         vm.broadcast();
 
-        // ERC721OwnershipHook erc721OwnershipHook = new ERC721OwnershipHook{salt: salt}(manager, IERC721(PERKSNFT));
-        ERC721OwnershipHook erc721OwnershipHook = new ERC721OwnershipHook{salt: salt}(manager);
-        require(address(erc721OwnershipHook) == hookAddress, "ERC721OwnershipHookScript: hook address mismatch");
+        PerksStoreHook perksStoreHook = new PerksStoreHook{salt: salt}(manager);
+        require(address(perksStoreHook) == hookAddress, "PerksStoreHookScript: hook address mismatch");
     }
 }
